@@ -31,7 +31,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
                             ErrorResponse.class
                     );
 
-            return registry.getException(errorResponse);
+            return registry.getFeignClientException(errorResponse);
         } catch (Exception e) {
             return new UnknownFeignException(
                     "Unexpected error received from downstream service."

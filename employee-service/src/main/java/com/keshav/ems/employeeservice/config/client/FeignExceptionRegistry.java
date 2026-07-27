@@ -6,6 +6,7 @@ import com.keshav.ems.employeeservice.exceptions.custom.UnknownFeignException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -15,11 +16,17 @@ public class FeignExceptionRegistry {
 
     private final  Map<FeignClientExceptionKey, Function<ErrorResponse,RuntimeException>> registry = new ConcurrentHashMap<>();
 
-    public void registerClientExceptions(String serviceName, String errorCode, Function<ErrorResponse,RuntimeException> supplier) {
+
+    public FeignExceptionRegistry(List<FeignExceptionRegistrar> registrars) {
+
+        registrars.forEach(registrar -> registrar.register(this));
+    }
+
+    public void registerFeignClientExceptions(String serviceName, String errorCode, Function<ErrorResponse,RuntimeException> supplier) {
         registry.put(new FeignClientExceptionKey(serviceName, errorCode), supplier);
     }
 
-    public RuntimeException getException(ErrorResponse error) {
+    public RuntimeException getFeignClientException(ErrorResponse error) {
 
         return registry.getOrDefault(
                         new FeignClientExceptionKey(error.serviceName(), error.serviceErrorCode()),

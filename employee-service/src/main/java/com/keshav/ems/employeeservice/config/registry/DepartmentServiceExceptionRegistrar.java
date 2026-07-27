@@ -11,7 +11,7 @@ public class DepartmentServiceExceptionRegistrar implements FeignExceptionRegist
     @Override
     public void register(FeignExceptionRegistry registry) {
 
-        registry.registerClientExceptions(
+        registry.registerFeignClientExceptions(
                 "department-service",
                 "DEPT_404",
                 errorResponse -> new DepartmentNotFoundException(errorResponse.message()));
