@@ -1,4 +1,4 @@
-package dto.event.common;
+package com.keshav.ems.notificationservice.event.dto.common;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
